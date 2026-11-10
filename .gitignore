@@ -25,6 +25,9 @@ client/bin/
 Thumbs.db
 desktop.ini
 
+# 敏感数据（万一被误拷进仓库）
+_private/
+
 # 本地配置（含口令/地址）
 .env
 *.local.json
