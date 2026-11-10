@@ -1,0 +1,23 @@
+#filePath=1_Setup\Setup.exe;appName=MyApp
+PRINT 开始安装 MyApp...
+SET_PATH 'Program Files\MyApp'
+RUN_A 'start "" "%RUN_PATH%\1_Setup\Setup.exe"'
+WHILE_WIN '安装 - MyApp' 60
+SLEEP 3000
+SET_WIN '安装 - MyApp'
+CLICK_TEXT 下一步
+SLEEP 1500
+WHILE_TEXT 许可证协议 60
+CLICK_TEXT 我接受
+SLEEP 1500
+WHILE_WIN '选择文件夹' 30
+SET_TEXT 4 PATH
+CLICK 1
+SLEEP 1500
+SET_WIN '安装 - MyApp'
+CLICK_TEXT 安装
+SLEEP 40000
+WHILE_TEXT 完成 200
+CLICK_TEXT 完成
+SLEEP 3000
+PRINT MyApp 安装完成

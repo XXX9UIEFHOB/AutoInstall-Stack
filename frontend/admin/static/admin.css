@@ -1,0 +1,23 @@
+body{font:14px/1.6 "Segoe UI",system-ui,"Microsoft YaHei";margin:0;background:#f5f6f8;color:#222}
+ header{background:#1f2937;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center}
+ header h1{font-size:16px;margin:0;font-weight:600}
+ .wrap{padding:16px 18px;max-width:1400px}
+ .tabs{display:flex;gap:8px;margin-bottom:12px}
+ .tabs button{padding:6px 14px;border:1px solid #d0d5dd;background:#fff;border-radius:6px;cursor:pointer}
+ .tabs button.on{background:#2563eb;color:#fff;border-color:#2563eb}
+ table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+ th,td{padding:8px 10px;border-bottom:1px solid #eef1f4;text-align:left;vertical-align:top;font-size:13px}
+ th{background:#f8fafc;font-weight:600}
+ tr:hover td{background:#fafcff}
+ textarea{width:100%;min-height:90px;font:12px/1.5 Consolas,monospace}
+ input[type=text],input[type=number]{padding:5px 8px;border:1px solid #d0d5dd;border-radius:5px;width:100%;box-sizing:border-box}
+ .btn{padding:5px 12px;border:1px solid #2563eb;background:#2563eb;color:#fff;border-radius:5px;cursor:pointer}
+ .btn.g{background:#fff;color:#2563eb}
+ .btn.r{background:#fff;color:#dc2626;border-color:#dc2626}
+ .muted{color:#6b7280;font-size:12px}
+ #toast{position:fixed;right:18px;bottom:18px;background:#111827;color:#fff;padding:10px 14px;border-radius:8px;display:none}
+ dialog{border:none;border-radius:10px;padding:0;width:min(900px,92vw)}
+ dialog .hd{padding:12px 16px;border-bottom:1px solid #eee;font-weight:600}
+ dialog .bd{padding:14px 16px;max-height:70vh;overflow:auto}
+ dialog .ft{padding:12px 16px;border-top:1px solid #eee;text-align:right;display:flex;gap:8px;justify-content:flex-end}
+ label{display:block;margin:8px 0 4px;font-size:12px;color:#374151}

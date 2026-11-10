@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>登录 - 管理台</title>
+<style>body{font:14px system-ui,"Microsoft YaHei";display:flex;height:100vh;align-items:center;justify-content:center;background:#f5f6f8}
+.box{background:#fff;padding:26px 28px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.08);width:320px}
+h1{font-size:16px;margin:0 0 16px}input{width:100%;padding:9px 10px;border:1px solid #d0d5dd;border-radius:6px;box-sizing:border-box}
+button{margin-top:14px;width:100%;padding:9px;border:0;border-radius:6px;background:#2563eb;color:#fff;cursor:pointer}
+.err{color:#dc2626;font-size:12px;margin-top:10px;min-height:16px}</style></head>
+<body><form class="box" method="post" action="/admin/login">
+<h1>装机任务管理台</h1><input type="password" name="token" placeholder="管理口令" autofocus>
+<button type="submit">进入</button><div class="err">%ERR%</div></form></body></html>

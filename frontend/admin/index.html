@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>装机任务管理台</title>
+<link rel="stylesheet" href="/admin/static/admin.css"></head>
+<body>
+<header><h1>装机任务管理台 <span class="muted" style="color:#9ca3af">(AutoInstall backend)</span></h1>
+<div><span id="who" class="muted" style="color:#cbd5e1"></span> <button class="btn g" onclick="logout()">退出</button></div></header>
+<div class="wrap">
+ <div class="tabs">
+   <button id="tb-tasks" class="on" onclick="tab('tasks')">安装任务</button>
+   <button id="tb-users" onclick="tab('users')">授权用户</button>
+   <button id="tb-records" onclick="tab('records')">安装上报</button>
+ </div>
+ <div id="view"></div>
+</div>
+<dialog id="dlg"><div class="hd" id="dlgTitle"></div><div class="bd" id="dlgBody"></div>
+ <div class="ft"><button class="btn g" onclick="dlg.close()">取消</button><button class="btn" id="dlgOk">保存</button></div></dialog>
+<div id="toast"></div>
+<script src="/admin/static/admin.js"></script>
+</body></html>

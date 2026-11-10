@@ -1,0 +1,22 @@
+[
+ {
+  "id": 1,
+  "appName": "DemoApp-静默安装",
+  "appVer": "1.0",
+  "appFirm": "Demo",
+  "appScript": "#filePath=1_Setup\\DemoApp.msi;appName=DemoApp\nSET_PATH 'Program Files\\DemoApp'\nPRINT 正在安装 DemoApp ...\nRUN_INFO 'msiexec.exe' '/i \"%RUN_PATH%\\1_Setup\\DemoApp.msi\" INSTALLDIR=\"%PATH%\" /qb /norestart /L*V \"%TEMP%install_demoapp.log\"'\nSLEEP 3000\nPRINT DemoApp 安装完成",
+  "appPath": "",
+  "appDirectory": "",
+  "appPackageName": "DemoApp_MSI"
+ },
+ {
+  "id": 2,
+  "appName": "DemoApp-向导安装",
+  "appVer": "1.0",
+  "appFirm": "Demo",
+  "appScript": "#filePath=1_Setup\\Setup.exe;appName=DemoApp\n# 向导型安装包：抓到的控件 ID 填在 CLICK / SET_TEXT 里（见 tools/WinSnap）\nSET_PATH 'Program Files\\DemoApp'\nPRINT 开始安装 DemoApp ...\nRUN_A 'start \"\" \"%RUN_PATH%\\1_Setup\\Setup.exe\"'\nWHILE_WIN '安装 - DemoApp' 60\nSET_WIN '安装 - DemoApp'\nCLICK_TEXT 我接受\nSLEEP 1500\nCLICK_TEXT 下一步\nWHILE_WIN '选择文件夹' 30\nSET_TEXT 4 PATH\nCLICK 1\nSLEEP 1500\nSET_WIN '安装 - DemoApp'\nCLICK_TEXT 安装\nWHILE_TEXT 完成 200\nCLICK_TEXT 完成\nSLEEP 2000\nPRINT DemoApp 安装完成",
+  "appPath": "",
+  "appDirectory": "",
+  "appPackageName": "DemoApp_Setup"
+ }
+]

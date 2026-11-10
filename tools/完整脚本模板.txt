@@ -1,0 +1,139 @@
+===========================================================
+ 完整脚本模板 —— 把「抓到的片段」拼成一台能跑的脚本
+===========================================================
+
+【核心概念】工具给你的是“零件”（点哪个按钮），脚本需要“整机”：
+   ① 校验头   ② 设路径   ③ 启动安装   ④ 等窗口   ⑤ 点按钮(零件)
+   ⑥ 等完成   ⑦ 打补丁/导入授权   ⑧ 结束
+
+【三条铁律】
+   1. 同一个按钮，CLICK 和 CLICK_TEXT 只写一种（推荐 CLICK_TEXT，换版本不怕）
+   2. 每次点之前一定要有 SET_WIN（或者 WHILE_WIN）把窗口绑定好
+   3. 点完就 SLEEP 一下，等界面反应过来（一般 800~2000 毫秒）
+
+
+===========================================================
+ 模板 A：向导型安装包（Setup.exe，一屏一屏点）★最常用
+===========================================================
+#filePath=1_Setup\Setup.exe;md5=这里填32位MD5;appName=MyApp
+PRINT 开始安装 MyApp...
+SET_PATH 'Program Files\MyApp'
+RUN_A 'start "" "%RUN_PATH%\1_Setup\Setup.exe"'
+
+# --- 第1屏：欢迎 → 下一步 ---
+WHILE_WIN '安装 - MyApp' 60
+SLEEP 3000
+SET_WIN '安装 - MyApp'
+CLICK_TEXT 下一步
+SLEEP 1500
+
+# --- 第2屏：许可协议 → 我接受 ---
+WHILE_TEXT 许可证协议 60
+CLICK_TEXT 我接受
+CLICK_TEXT 下一步
+SLEEP 1500
+
+# --- 第3屏：选目录 → 填路径 → 下一步 ---
+WHILE_WIN '选择文件夹' 30
+SET_TEXT 4 PATH
+CLICK 1
+SLEEP 1500
+
+# --- 第4屏：开始安装 ---
+SET_WIN '安装 - MyApp'
+CLICK_TEXT 安装
+SLEEP 40000
+
+# --- 等装完 ---
+WHILE_TEXT 完成 200
+CLICK_TEXT 完成
+SLEEP 3000
+
+# --- 可选：覆盖破解文件 ---
+# COPY_FILES '%RUN_PATH%\4_授权文件\MyApp' '%PATH%'
+
+PRINT MyApp 安装完成
+
+
+===========================================================
+ 模板 B：MSI 静默安装（不用点，一行搞定）
+===========================================================
+#filePath=1_Setup\MyApp.msi;md5=这里填MD5
+SET_PATH 'Program Files\MyApp'
+PRINT 正在安装 MyApp...
+RUN_INFO 'msiexec.exe' '/i "%RUN_PATH%\1_Setup\MyApp.msi" INSTALLDIR="%PATH%" /qb /norestart /L*V "%TEMP%install_myapp.log"'
+SLEEP 3000
+PRINT MyApp 安装完成
+
+
+===========================================================
+ 模板 C：Setup.exe 但支持静默参数（最省事）
+===========================================================
+#filePath=1_Setup\Setup.exe;md5=这里填MD5
+SET_PATH 'Program Files\MyApp'
+PRINT 正在安装 MyApp...
+RUN_INFO '%RUN_PATH%\1_Setup\Setup.exe' '/S /D="%PATH%"'
+SLEEP 3000
+PRINT MyApp 安装完成
+   ※ /S 是 NSIS 的静默参数；InstallShield 用 /s /v"/qn"；Inno 用 /VERYSILENT /DIR="路径"
+   ※ 不确定就先用模板 A 点一遍
+
+
+===========================================================
+ 模板 D：绿色软件（复制文件 + 建快捷方式）
+===========================================================
+SET_PATH 'Program Files\MyApp'
+PRINT 正在部署 MyApp...
+COPY_FILES '%RUN_PATH%\Program' '%PATH%'
+SLEEP 1000
+LINK MyApp
+PRINT MyApp 部署完成
+
+
+===========================================================
+ 可选动作（需要就加在 PRING 完成 之前）
+===========================================================
+# 覆盖破解文件（第二个参数是“目标目录”）
+COPY_FILES '%RUN_PATH%\4_授权文件\Program Files\MyApp' '%PATH%'
+FILE       '%RUN_PATH%\app.exe' '%PATH%\DemoApp'
+
+# 双击导入 .reg 注册表，然后连按两次“是”
+RUN '%RUN_PATH%\2_双击导入.reg'
+SLEEP 1500
+SET_WIN 注册表编辑器
+KEY ENTER
+SLEEP 1000
+SET_WIN 注册表编辑器
+KEY ENTER
+
+# 启动授权/破解程序
+RUN_A 'start "" "%RUN_PATH%\授权文件.exe"' '%PATH%'
+SLEEP 7000
+
+# 杀掉安装后自动启动的进程
+KILL sldworks_fs
+KILL dispatcher
+
+# 按日志里的百分比等进度（比死等准）
+READ_PACE 'C:\install_myapp.log' '(\d+)\s*%'
+
+
+===========================================================
+ 变量速查
+===========================================================
+%RUN_PATH%   安装包所在目录（客户端自动设置，= 那个和包名同名的子目录）
+%PATH%       安装目标目录（SET_PATH 之后生效）
+%DISK%       客户端界面上选的磁盘，例如 C:\
+%TEMP%       系统临时目录
+%APP_PATH%   APP_PATH 命令查到的“已安装软件目录”
+
+
+===========================================================
+ 填完怎么检查
+===========================================================
+1) 校验头那行的 md5，用工具算，别手写：
+   python new_task.py make --dir "D:\装机包\MyApp_1.0" --name MyApp --dry-run
+2) 语法检查（能抓未知命令、变量拼错、首字符错位）：
+   python new_task.py lint --script my.txt
+3) 想跳过校验快速试跑：头行只留 #filePath 和 appName，不要写 md5
+   （写了 md5 但文件对不上 → 任务会被静默跳过，最难查）

@@ -1,0 +1,16 @@
+services:
+  autoinstall-backend:
+    build: .
+    container_name: autoinstall-backend
+    restart: unless-stopped
+    ports:
+      - "3809:3809"
+    command: ["--host", "0.0.0.0", "--port", "3809", "--token", "change-me"]
+    volumes:
+      - ./data:/app/data          # tasks.json / users.json / records.jsonl 持久化
+      - ./static:/app/static
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

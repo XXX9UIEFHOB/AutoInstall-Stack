@@ -1,0 +1,30 @@
+# 运行时数据（不要提交）
+backend/data/records.jsonl
+backend/data/access.log
+backend/data/nohup.log
+backend/*.pid
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 编译产物
+*.exe
+!tools/prebuilt/*
+*.pdb
+*.dll
+client/obj/
+client/bin/
+
+# 编辑器 / 系统
+.vs/
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+# 本地配置（含口令/地址）
+.env
+*.local.json
